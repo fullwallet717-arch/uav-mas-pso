@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+.env
+.env.*
+!.env.example
+
+# Data
+data/*
+!data/README.md
+
+# Results
+results/latest/
+results/runs/
+results/tmp/
+
+# Local prototype files
+/msc_project_uav_mas_pso.py
+/user_distribution_scatter.py
+
+Result/
+Simulation Picture/
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+~$*
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
