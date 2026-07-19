@@ -15,10 +15,10 @@ class MASConfig:
     communication_range: float = 60.0
     min_safe_distance: float = 12.0
     max_move_distance: float = 35.0
-    density_weight: float = 0.03
-    safety_weight: float = 0.18
-    movement_weight: float = 0.12
-    overlap_weight: float = 0.04
+    density_weight: float = 0.05
+    safety_weight: float = 0.20
+    movement_weight: float = 0.15
+    overlap_weight: float = 0.05
 
 
 @dataclass(frozen=True)

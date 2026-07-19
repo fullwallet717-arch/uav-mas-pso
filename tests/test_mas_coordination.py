@@ -16,6 +16,14 @@ from mas_coordination import (
 
 
 class MASCoordinationTests(unittest.TestCase):
+    def test_default_weights_are_preliminary_round_values(self):
+        config = MASConfig()
+
+        self.assertEqual(config.density_weight, 0.05)
+        self.assertEqual(config.safety_weight, 0.20)
+        self.assertEqual(config.movement_weight, 0.15)
+        self.assertEqual(config.overlap_weight, 0.05)
+
     def test_shared_state_builds_distance_based_adjacency(self):
         positions = np.array([[0.0, 0.0], [30.0, 0.0], [100.0, 0.0]])
         state = share_uav_state(positions, communication_range=60.0)

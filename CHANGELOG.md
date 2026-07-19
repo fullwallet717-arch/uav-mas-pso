@@ -4,6 +4,7 @@
 
 - Added shared UAV state and communication adjacency calculations.
 - Added coverage, density, safety, movement, boundary, and overlap metrics.
+- Added preliminary round weights for the reward and penalty terms.
 - Added deterministic tests for the MAS coordination module.
 
 ## [0.1.0] - 2026-07-19
