@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0] - Unreleased
+## [0.2.0] - 2026-07-20
 
 - Added shared UAV state and communication adjacency calculations.
 - Added coverage, density, safety, movement, boundary, and overlap metrics.

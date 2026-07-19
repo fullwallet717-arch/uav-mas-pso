@@ -4,7 +4,7 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-The local `v0.2.0` candidate adds MAS shared-state coordination and deployment evaluation to the files introduced in `v0.1.0`.
+Version `v0.2.0` adds MAS shared-state coordination and deployment evaluation to the files introduced in `v0.1.0`.
 
 ## Files
 
@@ -57,7 +57,7 @@ The generated simulation figures are saved in `results/simulation`.
 
 The MAS module uses a shared-state simulation. UAVs within the communication range are treated as neighbors and are included in overlap coordination. It does not implement a wireless network protocol.
 
-The local candidate uses preliminary objective weights: `0.05` for density, `0.20` for safety, `0.15` for movement, and `0.05` for overlap. These are initial round values rather than tuned parameters.
+Version `v0.2.0` uses preliminary objective weights: `0.05` for density, `0.20` for safety, `0.15` for movement, and `0.05` for overlap. These are initial round values rather than tuned parameters.
 
 Run the tests with:
 
