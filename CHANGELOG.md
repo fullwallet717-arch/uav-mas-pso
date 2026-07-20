@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.0] - Unreleased
+## [0.3.0] - 2026-07-21
 
 - Added a standard PSO optimizer for one UAV deployment time slice.
 - Represented each particle as a joint deployment of all UAVs.
