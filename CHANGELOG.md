@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] - Unreleased
+
+- Added a standard PSO optimizer for one UAV deployment time slice.
+- Represented each particle as a joint deployment of all UAVs.
+- Added personal-best and global-best velocity updates with boundary handling.
+- Added preliminary PSO defaults and deterministic unit tests.
+
 ## [0.2.0] - 2026-07-20
 
 - Added shared UAV state and communication adjacency calculations.

@@ -4,14 +4,16 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.2.0` adds MAS shared-state coordination and deployment evaluation to the files introduced in `v0.1.0`.
+Version `v0.3.0` adds a standard PSO optimizer for one UAV deployment time slice. It builds on the data processing and MAS evaluation modules from the earlier versions.
 
 ## Files
 
 - `data_preprocessing.py`: filters the trajectory data, determines the disaster-area boundary, selects users, and fills missing positions.
 - `mas_coordination.py`: shares UAV positions, builds communication links, and evaluates coverage, density, safety, movement, and overlap.
+- `standard_pso.py`: searches for a joint UAV deployment with standard PSO updates.
 - `uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
 - `tests/test_mas_coordination.py`: checks the MAS calculations with small deterministic examples.
+- `tests/test_standard_pso.py`: checks initialization, repeatability, boundaries, and convergence history.
 
 ## Environment
 
@@ -58,6 +60,12 @@ The generated simulation figures are saved in `results/simulation`.
 The MAS module uses a shared-state simulation. UAVs within the communication range are treated as neighbors and are included in overlap coordination. It does not implement a wireless network protocol.
 
 Version `v0.2.0` uses preliminary objective weights: `0.05` for density, `0.20` for safety, `0.15` for movement, and `0.05` for overlap. These are initial round values rather than tuned parameters.
+
+## Standard PSO
+
+Each particle represents the coordinates of all five UAVs. The optimizer compares each particle's personal best deployment with the swarm's global best deployment, then updates velocity and position. Candidate coordinates are kept inside the disaster-area boundary.
+
+The `v0.3.0` defaults are preliminary values: `20` particles, `20` iterations, `w = 0.70`, and `c1 = c2 = 1.50`. This version is limited to one time slice and does not use warm-start.
 
 Run the tests with:
 
