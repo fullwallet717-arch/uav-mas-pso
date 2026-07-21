@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0] - Unreleased
+
+- Added Random Deployment, K-means, Standard PSO, and Static PSO baselines.
+- Added shared result structures and average coverage and fitness calculations.
+- Added minimum-movement UAV ID alignment between time slices.
+- Added deterministic tests for all baseline workflows.
+
 ## [0.4.0] - 2026-07-21
 
 - Added consecutive time-slice MAS-PSO optimization.

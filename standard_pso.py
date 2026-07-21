@@ -7,6 +7,13 @@ from dataclasses import dataclass
 import numpy as np
 
 from data_preprocessing import Boundary
+from deployment_results import (
+    DeploymentRunResult,
+    TimeSliceResult,
+    align_uav_positions,
+    build_deployment_result,
+    validate_positions_tensor,
+)
 from mas_coordination import DeploymentMetrics, MASConfig, evaluate_deployment
 
 
@@ -174,3 +181,49 @@ def run_standard_pso(
         pso_config=pso_config,
         mas_config=mas_config,
     )
+
+
+def run_standard_pso_baseline(
+    positions_tensor: np.ndarray,
+    time_slots: list[int] | tuple[int, ...],
+    boundary: Boundary,
+    uav_count: int = 5,
+    pso_config: PSOConfig = PSOConfig(),
+    mas_config: MASConfig = MASConfig(),
+    seed: int = 42,
+) -> DeploymentRunResult:
+    """Run an independently initialized standard PSO for every time slice."""
+    users_by_time = validate_positions_tensor(positions_tensor, time_slots)
+    previous_positions: np.ndarray | None = None
+    results: list[TimeSliceResult] = []
+
+    for index, time_slot in enumerate(time_slots):
+        optimized = run_standard_pso(
+            users_by_time[index],
+            boundary,
+            uav_count=uav_count,
+            previous_positions=previous_positions,
+            pso_config=pso_config,
+            mas_config=mas_config,
+            seed=seed + index,
+        )
+        positions = align_uav_positions(previous_positions, optimized.positions)
+        metrics = evaluate_deployment(
+            users_by_time[index],
+            positions,
+            previous_positions=previous_positions,
+            boundary=boundary,
+            config=mas_config,
+        )
+        results.append(
+            TimeSliceResult(
+                time_slot=int(time_slot),
+                positions=positions,
+                metrics=metrics,
+                convergence_history=optimized.convergence_history,
+                initial_best_fitness=optimized.initial_best_fitness,
+            )
+        )
+        previous_positions = positions.copy()
+
+    return build_deployment_result("Standard_PSO", results)

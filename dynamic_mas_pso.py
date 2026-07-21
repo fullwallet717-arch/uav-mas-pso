@@ -7,7 +7,13 @@ from dataclasses import dataclass
 import numpy as np
 
 from data_preprocessing import Boundary
-from mas_coordination import DeploymentMetrics, MASConfig
+from deployment_results import (
+    DeploymentRunResult,
+    TimeSliceResult,
+    build_deployment_result,
+    validate_positions_tensor,
+)
+from mas_coordination import MASConfig
 from standard_pso import PSOConfig, PSOResult, initialize_swarm, optimize_swarm
 
 
@@ -17,21 +23,7 @@ class WarmStartConfig:
     random_restart_ratio: float = 0.20
 
 
-@dataclass(frozen=True)
-class TimeSliceResult:
-    time_slot: int
-    positions: np.ndarray
-    metrics: DeploymentMetrics
-    convergence_history: tuple[float, ...]
-    initial_best_fitness: float
-    warm_started: bool
-
-
-@dataclass(frozen=True)
-class DynamicMASPSOResult:
-    time_slices: tuple[TimeSliceResult, ...]
-    average_coverage_rate: float
-    average_fitness: float
+DynamicMASPSOResult = DeploymentRunResult
 
 
 def _clip_swarm(swarm: np.ndarray, boundary: Boundary) -> None:
@@ -81,22 +73,6 @@ def initialize_warm_swarm(
     return swarm
 
 
-def _validate_dynamic_inputs(
-    positions_tensor: np.ndarray,
-    time_slots: list[int] | tuple[int, ...],
-) -> np.ndarray:
-    positions = np.asarray(positions_tensor, dtype=float)
-    if positions.ndim != 3 or positions.shape[2] != 2:
-        raise ValueError("positions_tensor must have shape (time, users, 2).")
-    if positions.shape[0] == 0 or positions.shape[1] == 0:
-        raise ValueError("positions_tensor must contain time slices and users.")
-    if positions.shape[0] != len(time_slots):
-        raise ValueError("time_slots length must match positions_tensor.")
-    if not np.isfinite(positions).all():
-        raise ValueError("positions_tensor must contain only finite values.")
-    return positions
-
-
 def run_dynamic_mas_pso(
     positions_tensor: np.ndarray,
     time_slots: list[int] | tuple[int, ...],
@@ -108,7 +84,7 @@ def run_dynamic_mas_pso(
     seed: int = 42,
 ) -> DynamicMASPSOResult:
     """Optimize consecutive time slices and reuse the preceding best deployment."""
-    positions = _validate_dynamic_inputs(positions_tensor, time_slots)
+    positions = validate_positions_tensor(positions_tensor, time_slots)
     rng = np.random.default_rng(seed)
     previous_best: np.ndarray | None = None
     slice_results: list[TimeSliceResult] = []
@@ -152,10 +128,4 @@ def run_dynamic_mas_pso(
         )
         previous_best = optimized.positions.copy()
 
-    coverage_rates = [result.metrics.coverage_rate for result in slice_results]
-    fitness_values = [result.metrics.fitness for result in slice_results]
-    return DynamicMASPSOResult(
-        time_slices=tuple(slice_results),
-        average_coverage_rate=float(np.mean(coverage_rates)),
-        average_fitness=float(np.mean(fitness_values)),
-    )
+    return build_deployment_result("MAS_PSO", slice_results)

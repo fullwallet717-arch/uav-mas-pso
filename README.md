@@ -4,7 +4,7 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.4.0` connects the MAS evaluation and PSO search across consecutive time slices. It adds warm-start initialization for tracking a moving population.
+Version `v0.5.0` adds Random Deployment, K-means, Standard PSO, and Static PSO baselines with a shared result structure.
 
 ## Files
 
@@ -12,10 +12,15 @@ Version `v0.4.0` connects the MAS evaluation and PSO search across consecutive t
 - `mas_coordination.py`: shares UAV positions, builds communication links, and evaluates coverage, density, safety, movement, and overlap.
 - `standard_pso.py`: searches for a joint UAV deployment with standard PSO updates.
 - `dynamic_mas_pso.py`: runs MAS-PSO over consecutive time slices with warm-start.
+- `deployment_results.py`: provides shared time-slice results, averages, validation, and UAV ID alignment.
+- `random_deployment.py`: samples a new random UAV deployment for each time slice.
+- `kmeans_deployment.py`: places UAVs at current population cluster centers.
+- `static_pso.py`: optimizes one fixed deployment for the aggregate population.
 - `uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
 - `tests/test_mas_coordination.py`: checks the MAS calculations with small deterministic examples.
 - `tests/test_standard_pso.py`: checks initialization, repeatability, boundaries, and convergence history.
 - `tests/test_dynamic_mas_pso.py`: checks warm-start, time-slice tracking, averages, and repeatability.
+- `tests/test_baseline_algorithms.py`: checks the four baseline workflows and UAV ID alignment.
 
 ## Environment
 
@@ -74,6 +79,15 @@ The `v0.3.0` defaults are preliminary values: `20` particles, `20` iterations, `
 The first time slice starts from random particles. From the second time slice onward, the preceding best UAV deployment is copied into the new swarm and used as the center of nearby perturbed particles. A small group of random restart particles keeps some global exploration ability when the population distribution changes.
 
 Version `v0.4.0` uses preliminary warm-start values: a position noise standard deviation of `5.0` grid units and a random restart ratio of `0.20`. The objective weights and PSO parameters remain the preliminary values introduced in `v0.2.0` and `v0.3.0`.
+
+## Baseline Algorithms
+
+- Random Deployment independently samples UAV coordinates in every time slice.
+- K-means independently fits population cluster centers in every time slice.
+- Standard PSO independently initializes and optimizes a new swarm in every time slice.
+- Static PSO optimizes once for all time slices combined and then keeps the UAV coordinates fixed.
+
+The dynamic algorithm and all baselines now return the same time-slice fields and average coverage and fitness values. UAV coordinates from independently generated deployments are matched to previous UAV IDs by minimum total movement before movement metrics are calculated.
 
 Run the tests with:
 
