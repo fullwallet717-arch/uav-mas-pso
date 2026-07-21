@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.5.0] - Unreleased
+## [0.5.0] - 2026-07-22
 
 - Added Random Deployment, K-means, Standard PSO, and Static PSO baselines.
 - Added shared result structures and average coverage and fitness calculations.
