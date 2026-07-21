@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0] - Unreleased
+
+- Added consecutive time-slice MAS-PSO optimization.
+- Added warm-start particles around the preceding best UAV deployment.
+- Added random restart particles to retain global exploration.
+- Added per-time-slice results and average coverage and fitness metrics.
+- Added deterministic tests for the dynamic optimization workflow.
+
 ## [0.3.0] - 2026-07-21
 
 - Added a standard PSO optimizer for one UAV deployment time slice.

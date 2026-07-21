@@ -74,19 +74,26 @@ def _clip_swarm(swarm: np.ndarray, boundary: Boundary) -> None:
     swarm[:, :, 1] = np.clip(swarm[:, :, 1], boundary.ymin, boundary.ymax)
 
 
-def run_standard_pso(
+def optimize_swarm(
     user_positions: np.ndarray,
     boundary: Boundary,
-    uav_count: int = 5,
+    initial_swarm: np.ndarray,
+    rng: np.random.Generator,
     previous_positions: np.ndarray | None = None,
     pso_config: PSOConfig = PSOConfig(),
     mas_config: MASConfig = MASConfig(),
-    seed: int = 42,
 ) -> PSOResult:
-    """Optimize one time slice without warm-start or inter-slice state reuse."""
+    """Optimize one time slice from a caller-provided initial swarm."""
+    swarm = np.asarray(initial_swarm, dtype=float).copy()
+    if swarm.ndim != 3 or swarm.shape[2] != 2:
+        raise ValueError("initial_swarm must have shape (particles, UAVs, 2).")
+    if not np.isfinite(swarm).all():
+        raise ValueError("initial_swarm must contain only finite values.")
+    if swarm.shape[0] != pso_config.particles:
+        raise ValueError("initial_swarm particle count must match pso_config.particles.")
+    uav_count = swarm.shape[1]
     users = _validate_inputs(user_positions, boundary, uav_count, pso_config)
-    rng = np.random.default_rng(seed)
-    swarm = initialize_swarm(rng, boundary, uav_count, pso_config.particles)
+    _clip_swarm(swarm, boundary)
     velocities = rng.normal(
         0.0,
         pso_config.initial_velocity_std,
@@ -142,4 +149,28 @@ def run_standard_pso(
         metrics=global_best_metrics,
         convergence_history=tuple(convergence_history),
         initial_best_fitness=float(initial_best_fitness),
+    )
+
+
+def run_standard_pso(
+    user_positions: np.ndarray,
+    boundary: Boundary,
+    uav_count: int = 5,
+    previous_positions: np.ndarray | None = None,
+    pso_config: PSOConfig = PSOConfig(),
+    mas_config: MASConfig = MASConfig(),
+    seed: int = 42,
+) -> PSOResult:
+    """Optimize one time slice without warm-start or inter-slice state reuse."""
+    _validate_inputs(user_positions, boundary, uav_count, pso_config)
+    rng = np.random.default_rng(seed)
+    swarm = initialize_swarm(rng, boundary, uav_count, pso_config.particles)
+    return optimize_swarm(
+        user_positions,
+        boundary,
+        swarm,
+        rng,
+        previous_positions=previous_positions,
+        pso_config=pso_config,
+        mas_config=mas_config,
     )

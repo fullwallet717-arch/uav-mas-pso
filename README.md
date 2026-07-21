@@ -4,16 +4,18 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.3.0` adds a standard PSO optimizer for one UAV deployment time slice. It builds on the data processing and MAS evaluation modules from the earlier versions.
+Version `v0.4.0` connects the MAS evaluation and PSO search across consecutive time slices. It adds warm-start initialization for tracking a moving population.
 
 ## Files
 
 - `data_preprocessing.py`: filters the trajectory data, determines the disaster-area boundary, selects users, and fills missing positions.
 - `mas_coordination.py`: shares UAV positions, builds communication links, and evaluates coverage, density, safety, movement, and overlap.
 - `standard_pso.py`: searches for a joint UAV deployment with standard PSO updates.
+- `dynamic_mas_pso.py`: runs MAS-PSO over consecutive time slices with warm-start.
 - `uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
 - `tests/test_mas_coordination.py`: checks the MAS calculations with small deterministic examples.
 - `tests/test_standard_pso.py`: checks initialization, repeatability, boundaries, and convergence history.
+- `tests/test_dynamic_mas_pso.py`: checks warm-start, time-slice tracking, averages, and repeatability.
 
 ## Environment
 
@@ -66,6 +68,12 @@ Version `v0.2.0` uses preliminary objective weights: `0.05` for density, `0.20` 
 Each particle represents the coordinates of all five UAVs. The optimizer compares each particle's personal best deployment with the swarm's global best deployment, then updates velocity and position. Candidate coordinates are kept inside the disaster-area boundary.
 
 The `v0.3.0` defaults are preliminary values: `20` particles, `20` iterations, `w = 0.70`, and `c1 = c2 = 1.50`. This version is limited to one time slice and does not use warm-start.
+
+## Dynamic MAS-PSO
+
+The first time slice starts from random particles. From the second time slice onward, the preceding best UAV deployment is copied into the new swarm and used as the center of nearby perturbed particles. A small group of random restart particles keeps some global exploration ability when the population distribution changes.
+
+Version `v0.4.0` uses preliminary warm-start values: a position noise standard deviation of `5.0` grid units and a random restart ratio of `0.20`. The objective weights and PSO parameters remain the preliminary values introduced in `v0.2.0` and `v0.3.0`.
 
 Run the tests with:
 
