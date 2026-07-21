@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.0] - Unreleased
+## [0.4.0] - 2026-07-21
 
 - Added consecutive time-slice MAS-PSO optimization.
 - Added warm-start particles around the preceding best UAV deployment.
