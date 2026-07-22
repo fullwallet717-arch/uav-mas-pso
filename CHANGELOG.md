@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0] - Unreleased
+## [0.6.0] - 2026-07-23
 
 - Added one shared experiment configuration for data and algorithm settings.
 - Added a single data preparation path for all deployment algorithms.
