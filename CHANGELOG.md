@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0] - Unreleased
+
+- Added one shared experiment configuration for data and algorithm settings.
+- Added a single data preparation path for all deployment algorithms.
+- Added fixed-order execution of all five algorithms with the same inputs and seed.
+- Added an in-memory experiment result with algorithm lookup and summary metrics.
+- Added deterministic tests for the complete experiment runner.
+
 ## [0.5.0] - 2026-07-22
 
 - Added Random Deployment, K-means, Standard PSO, and Static PSO baselines.
