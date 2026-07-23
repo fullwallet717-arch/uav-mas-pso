@@ -18,6 +18,7 @@ class TimeSliceResult:
     convergence_history: tuple[float, ...] = ()
     initial_best_fitness: float | None = None
     warm_started: bool = False
+    runtime_seconds: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,8 @@ class DeploymentRunResult:
     time_slices: tuple[TimeSliceResult, ...]
     average_coverage_rate: float
     average_fitness: float
+    total_runtime_seconds: float
+    average_runtime_seconds: float
 
 
 def validate_positions_tensor(
@@ -81,9 +84,14 @@ def build_deployment_result(
         raise ValueError("time_slices cannot be empty.")
     coverage = [item.metrics.coverage_rate for item in time_slices]
     fitness = [item.metrics.fitness for item in time_slices]
+    runtimes = [item.runtime_seconds for item in time_slices]
+    if any(runtime < 0 for runtime in runtimes):
+        raise ValueError("runtime_seconds cannot be negative.")
     return DeploymentRunResult(
         algorithm=algorithm,
         time_slices=tuple(time_slices),
         average_coverage_rate=float(np.mean(coverage)),
         average_fitness=float(np.mean(fitness)),
+        total_runtime_seconds=float(np.sum(runtimes)),
+        average_runtime_seconds=float(np.mean(runtimes)),
     )

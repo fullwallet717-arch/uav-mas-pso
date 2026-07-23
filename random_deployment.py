@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from time import perf_counter
+
 import numpy as np
 
 from data_preprocessing import Boundary
@@ -43,6 +45,7 @@ def run_random_deployment(
     results: list[TimeSliceResult] = []
 
     for index, time_slot in enumerate(time_slots):
+        slot_start = perf_counter()
         positions = random_uav_positions(rng, boundary, uav_count)
         positions = align_uav_positions(previous_positions, positions)
         metrics = evaluate_deployment(
@@ -57,6 +60,7 @@ def run_random_deployment(
                 time_slot=int(time_slot),
                 positions=positions,
                 metrics=metrics,
+                runtime_seconds=perf_counter() - slot_start,
             )
         )
         previous_positions = positions.copy()

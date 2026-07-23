@@ -177,6 +177,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--boundary-quantile", type=float, default=BOUNDARY_QUANTILE)
     parser.add_argument("--min-observation-ratio", type=float, default=MIN_OBS_RATIO)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Optional directory for CSV results and thesis figures.",
+    )
     return parser.parse_args()
 
 
@@ -197,13 +202,21 @@ def main() -> None:
     print(f"Selected users: {len(result.data.user_ids)}")
     print(f"Time slots: {result.data.time_slots[0]}-{result.data.time_slots[-1]}")
     print(f"Boundary: {result.data.boundary}")
-    print("Algorithm            Coverage    Fitness")
+    print("Algorithm            Coverage    Fitness    Avg runtime (s)")
     for algorithm in result.algorithms:
         print(
             f"{algorithm.algorithm:<20} "
             f"{algorithm.average_coverage_rate:>8.4f}    "
-            f"{algorithm.average_fitness:>7.4f}"
+            f"{algorithm.average_fitness:>7.4f}    "
+            f"{algorithm.average_runtime_seconds:>15.6f}"
         )
+    if args.output is not None:
+        from result_export import export_experiment_results
+        from result_visualization import save_all_figures
+
+        export_experiment_results(result, args.output)
+        save_all_figures(result, args.output)
+        print(f"Results and figures: {args.output.resolve()}")
 
 
 if __name__ == "__main__":

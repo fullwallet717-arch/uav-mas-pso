@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from time import perf_counter
 
 import numpy as np
 
@@ -81,6 +82,7 @@ def run_kmeans_deployment(
     results: list[TimeSliceResult] = []
 
     for index, time_slot in enumerate(time_slots):
+        slot_start = perf_counter()
         positions = fit_kmeans(
             users_by_time[index], uav_count, boundary, rng, kmeans_config
         )
@@ -97,6 +99,7 @@ def run_kmeans_deployment(
                 time_slot=int(time_slot),
                 positions=positions,
                 metrics=metrics,
+                runtime_seconds=perf_counter() - slot_start,
             )
         )
         previous_positions = positions.copy()

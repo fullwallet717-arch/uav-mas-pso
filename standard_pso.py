@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from time import perf_counter
 
 import numpy as np
 
@@ -198,6 +199,7 @@ def run_standard_pso_baseline(
     results: list[TimeSliceResult] = []
 
     for index, time_slot in enumerate(time_slots):
+        slot_start = perf_counter()
         optimized = run_standard_pso(
             users_by_time[index],
             boundary,
@@ -222,6 +224,7 @@ def run_standard_pso_baseline(
                 metrics=metrics,
                 convergence_history=optimized.convergence_history,
                 initial_best_fitness=optimized.initial_best_fitness,
+                runtime_seconds=perf_counter() - slot_start,
             )
         )
         previous_positions = positions.copy()

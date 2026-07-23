@@ -4,7 +4,7 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.5.0` adds Random Deployment, K-means, Standard PSO, and Static PSO baselines with a shared result structure.
+Version `v0.7.0` adds the unified experiment runner, runtime statistics, CSV result exports, and comparison figures for MAS-PSO and the four baseline algorithms.
 
 ## Files
 
@@ -16,11 +16,16 @@ Version `v0.5.0` adds Random Deployment, K-means, Standard PSO, and Static PSO b
 - `random_deployment.py`: samples a new random UAV deployment for each time slice.
 - `kmeans_deployment.py`: places UAVs at current population cluster centers.
 - `static_pso.py`: optimizes one fixed deployment for the aggregate population.
-- `uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
+- `experiment_runner.py`: prepares one shared dataset and runs all five algorithms with the same settings.
+- `result_export.py`: exports UAV positions, time-slice summaries, and the algorithm comparison table.
+- `result_visualization.py`: generates Figures 5.3-5.6 from the experiment results.
+- `Picture/uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
+- `Picture/`: contains reproducible scripts for the Chapter 3 methodology figures.
 - `tests/test_mas_coordination.py`: checks the MAS calculations with small deterministic examples.
 - `tests/test_standard_pso.py`: checks initialization, repeatability, boundaries, and convergence history.
 - `tests/test_dynamic_mas_pso.py`: checks warm-start, time-slice tracking, averages, and repeatability.
 - `tests/test_baseline_algorithms.py`: checks the four baseline workflows and UAV ID alignment.
+- `tests/test_result_outputs.py`: checks runtime fields, CSV exports, representative time-slice selection, and figure generation.
 
 ## Environment
 
@@ -57,10 +62,34 @@ The preprocessing module creates:
 Run the simulation with:
 
 ```powershell
-python .\uav_simulation_visualization.py
+python .\Picture\uav_simulation_visualization.py
 ```
 
-The generated simulation figures are saved in `results/simulation`.
+The generated simulation figures and Chapter 3 methodology figures are saved in `report_picture`.
+
+## Complete Experiment
+
+Run all five algorithms and save their results with:
+
+```powershell
+python .\experiment_runner.py --csv .\data\yjmob100k-dataset2.csv --output .\results
+```
+
+For each algorithm, the program exports:
+
+- `<algorithm>_uav_positions.csv`: UAV coordinates and movement distance in each time slice.
+- `<algorithm>_time_slot_summary.csv`: coverage, fitness, constraint, overlap, movement, communication, and runtime statistics.
+
+The shared `algorithm_comparison.csv` compares average coverage, fitness, movement, constraint violations, overlap, and runtime across the five algorithms.
+
+The following figures are also generated:
+
+- `Figure_5_3_coverage_rate_by_time_slot.png`: coverage-rate curves for all five algorithms.
+- `Figure_5_4_mean_uav_movement_by_time_slot.png`: movement curves for MAS-PSO, Standard PSO, K-means, and Random Deployment.
+- `Figure_5_5_representative_time_slices.png`: MAS-PSO deployments at its lowest-coverage, largest-UAV-movement, and highest-coverage time slices.
+- `Figure_5_6_constraint_violations_and_overlap.png`: safety violations, movement violations, and average overlap for all algorithms.
+
+`Figure_5_5_selected_time_slots.csv` records the exact time slices selected for Figure 5.5 and the corresponding coverage and movement values.
 
 ## MAS Coordination
 

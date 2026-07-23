@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from time import perf_counter
+
 import numpy as np
 
 from data_preprocessing import Boundary
@@ -27,6 +29,7 @@ def run_static_pso(
     """Optimize once for the aggregate population and keep all UAVs fixed."""
     users_by_time = validate_positions_tensor(positions_tensor, time_slots)
     aggregate_users = users_by_time.reshape(-1, 2)
+    optimization_start = perf_counter()
     optimized = run_standard_pso(
         aggregate_users,
         boundary,
@@ -35,11 +38,13 @@ def run_static_pso(
         mas_config=mas_config,
         seed=seed,
     )
+    optimization_runtime = perf_counter() - optimization_start
 
     static_positions = optimized.positions.copy()
     previous_positions: np.ndarray | None = None
     results: list[TimeSliceResult] = []
     for index, time_slot in enumerate(time_slots):
+        slot_start = perf_counter()
         metrics = evaluate_deployment(
             users_by_time[index],
             static_positions,
@@ -57,6 +62,10 @@ def run_static_pso(
                 ),
                 initial_best_fitness=(
                     optimized.initial_best_fitness if index == 0 else None
+                ),
+                runtime_seconds=(
+                    perf_counter() - slot_start
+                    + (optimization_runtime if index == 0 else 0.0)
                 ),
             )
         )

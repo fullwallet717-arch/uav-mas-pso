@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.0] - Unreleased
+
+- Added per-time-slice and aggregate runtime measurements for all algorithms.
+- Added UAV position, time-slice summary, and cross-algorithm comparison CSV exports.
+- Added one coverage comparison figure for MAS-PSO and all four baselines.
+- Added one UAV movement comparison figure for all non-static algorithms.
+- Added representative MAS-PSO time-slice selection by minimum coverage, maximum
+  UAV movement, and maximum coverage.
+- Added representative deployment and constraint comparison figures.
+- Added automated tests for runtimes, exported tables, and generated figures.
+
 ## [0.6.0] - 2026-07-23
 
 - Added one shared experiment configuration for data and algorithm settings.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from time import perf_counter
 
 import numpy as np
 
@@ -90,6 +91,7 @@ def run_dynamic_mas_pso(
     slice_results: list[TimeSliceResult] = []
 
     for index, time_slot in enumerate(time_slots):
+        slot_start = perf_counter()
         warm_started = previous_best is not None
         if previous_best is None:
             initial_swarm = initialize_swarm(
@@ -124,6 +126,7 @@ def run_dynamic_mas_pso(
                 convergence_history=optimized.convergence_history,
                 initial_best_fitness=optimized.initial_best_fitness,
                 warm_started=warm_started,
+                runtime_seconds=perf_counter() - slot_start,
             )
         )
         previous_best = optimized.positions.copy()
