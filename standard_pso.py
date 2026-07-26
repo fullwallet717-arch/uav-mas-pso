@@ -20,11 +20,11 @@ from mas_coordination import DeploymentMetrics, MASConfig, evaluate_deployment
 
 @dataclass(frozen=True)
 class PSOConfig:
-    particles: int = 20
-    iterations: int = 20
-    inertia: float = 0.70
-    c1: float = 1.50
-    c2: float = 1.50
+    particles: int = 32
+    iterations: int = 25
+    inertia: float = 0.72
+    c1: float = 1.45
+    c2: float = 1.45
     initial_velocity_std: float = 2.0
 
 

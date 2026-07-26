@@ -1,6 +1,14 @@
 # Changelog
 
-## [0.7.0] - Unreleased
+## [0.8.0] - Unreleased
+
+- Updated the MAS density, safety, movement, and overlap weights.
+- Updated the default PSO swarm size, iteration count, inertia, and learning
+  coefficients.
+- Kept the existing coverage radius, communication range, safety distance,
+  movement limit, and warm-start settings unchanged.
+
+## [0.7.0] - 2026-07-24
 
 - Added per-time-slice and aggregate runtime measurements for all algorithms.
 - Added UAV position, time-slice summary, and cross-algorithm comparison CSV exports.

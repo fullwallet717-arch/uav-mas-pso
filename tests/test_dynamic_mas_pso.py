@@ -22,7 +22,7 @@ class DynamicMASPSOTests(unittest.TestCase):
         self.tensor = np.stack([first, second, third])
         self.pso = PSOConfig(particles=10, iterations=5)
 
-    def test_default_warm_start_parameters_are_preliminary_values(self):
+    def test_default_warm_start_parameters_remain_unchanged_in_v080(self):
         config = WarmStartConfig()
 
         self.assertEqual(config.noise_std, 5.0)

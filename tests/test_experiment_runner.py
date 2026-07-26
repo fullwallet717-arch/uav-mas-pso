@@ -47,6 +47,19 @@ class ExperimentRunnerTests(unittest.TestCase):
         self.assertEqual(config.boundary_quantile, 0.05)
         self.assertEqual(config.min_observation_ratio, 0.20)
 
+    def test_default_algorithm_parameters_match_v080_configuration(self):
+        config = ExperimentConfig()
+
+        self.assertEqual(config.pso.particles, 32)
+        self.assertEqual(config.pso.iterations, 25)
+        self.assertEqual(config.pso.inertia, 0.72)
+        self.assertEqual(config.pso.c1, 1.45)
+        self.assertEqual(config.pso.c2, 1.45)
+        self.assertEqual(config.mas.density_weight, 0.03)
+        self.assertEqual(config.mas.safety_weight, 0.18)
+        self.assertEqual(config.mas.movement_weight, 0.12)
+        self.assertEqual(config.mas.overlap_weight, 0.04)
+
     def test_suite_runs_all_algorithms_in_fixed_order(self):
         result = run_algorithm_suite(self.data, self.config)
 

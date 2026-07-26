@@ -20,14 +20,14 @@ class StandardPSOTests(unittest.TestCase):
             ]
         )
 
-    def test_default_parameters_are_preliminary_values(self):
+    def test_default_parameters_match_v080_configuration(self):
         config = PSOConfig()
 
-        self.assertEqual(config.particles, 20)
-        self.assertEqual(config.iterations, 20)
-        self.assertEqual(config.inertia, 0.70)
-        self.assertEqual(config.c1, 1.50)
-        self.assertEqual(config.c2, 1.50)
+        self.assertEqual(config.particles, 32)
+        self.assertEqual(config.iterations, 25)
+        self.assertEqual(config.inertia, 0.72)
+        self.assertEqual(config.c1, 1.45)
+        self.assertEqual(config.c2, 1.45)
 
     def test_swarm_shape_and_boundary(self):
         swarm = initialize_swarm(

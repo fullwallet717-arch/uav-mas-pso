@@ -4,7 +4,7 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.7.0` adds the unified experiment runner, runtime statistics, CSV result exports, and comparison figures for MAS-PSO and the four baseline algorithms.
+Version `v0.8.0` updates the objective weights and PSO parameters used by MAS-PSO and the PSO-based baseline algorithms.
 
 ## Files
 
@@ -95,19 +95,38 @@ The following figures are also generated:
 
 The MAS module uses a shared-state simulation. UAVs within the communication range are treated as neighbors and are included in overlap coordination. It does not implement a wireless network protocol.
 
-Version `v0.2.0` uses preliminary objective weights: `0.05` for density, `0.20` for safety, `0.15` for movement, and `0.05` for overlap. These are initial round values rather than tuned parameters.
+Version `v0.2.0` used the initial objective weights. Version `v0.8.0` updates them to `0.03` for density, `0.18` for safety, `0.12` for movement, and `0.04` for overlap.
 
 ## Standard PSO
 
 Each particle represents the coordinates of all five UAVs. The optimizer compares each particle's personal best deployment with the swarm's global best deployment, then updates velocity and position. Candidate coordinates are kept inside the disaster-area boundary.
 
-The `v0.3.0` defaults are preliminary values: `20` particles, `20` iterations, `w = 0.70`, and `c1 = c2 = 1.50`. This version is limited to one time slice and does not use warm-start.
+Version `v0.3.0` used the initial PSO defaults. Version `v0.8.0` updates them to `32` particles, `25` iterations, `w = 0.72`, and `c1 = c2 = 1.45`.
 
 ## Dynamic MAS-PSO
 
 The first time slice starts from random particles. From the second time slice onward, the preceding best UAV deployment is copied into the new swarm and used as the center of nearby perturbed particles. A small group of random restart particles keeps some global exploration ability when the population distribution changes.
 
-Version `v0.4.0` uses preliminary warm-start values: a position noise standard deviation of `5.0` grid units and a random restart ratio of `0.20`. The objective weights and PSO parameters remain the preliminary values introduced in `v0.2.0` and `v0.3.0`.
+The warm-start values remain a position-noise standard deviation of `5.0` grid units and a random-restart ratio of `0.20`.
+
+## Algorithm Parameters in v0.8.0
+
+- UAV count: `5`
+- Coverage radius: `25.0`
+- Communication range: `60.0`
+- Minimum safe distance: `12.0`
+- Maximum movement distance per time slice: `35.0`
+- Density reward weight: `0.03`
+- Safety penalty weight: `0.18`
+- Movement penalty weight: `0.12`
+- Overlap penalty weight: `0.04`
+- PSO particles: `32`
+- PSO iterations: `25`
+- Inertia weight: `0.72`
+- Cognitive coefficient `c1`: `1.45`
+- Social coefficient `c2`: `1.45`
+- Warm-start noise standard deviation: `5.0`
+- Random restart ratio: `0.20`
 
 ## Baseline Algorithms
 
