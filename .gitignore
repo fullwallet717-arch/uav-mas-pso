@@ -30,11 +30,12 @@ results/runs/
 results/tmp/
 
 # Local prototype files
-/msc_project_uav_mas_pso.py
 /user_distribution_scatter.py
 
 Result/
 Simulation Picture/
+report_picture/
+results/formal/
 
 # Temporary files
 *.log

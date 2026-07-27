@@ -4,10 +4,11 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.8.0` updates the objective weights and PSO parameters used by MAS-PSO and the PSO-based baseline algorithms.
+Version `v0.9.0` adds the tested all-in-one experiment script as the official paper release entry while preserving its existing parameters and random-seed scheme.
 
 ## Files
 
+- `msc_project_uav_mas_pso.py`: official all-in-one entry for data processing, all five algorithms, result tables, and figures.
 - `data_preprocessing.py`: filters the trajectory data, determines the disaster-area boundary, selects users, and fills missing positions.
 - `mas_coordination.py`: shares UAV positions, builds communication links, and evaluates coverage, density, safety, movement, and overlap.
 - `standard_pso.py`: searches for a joint UAV deployment with standard PSO updates.
@@ -19,13 +20,13 @@ Version `v0.8.0` updates the objective weights and PSO parameters used by MAS-PS
 - `experiment_runner.py`: prepares one shared dataset and runs all five algorithms with the same settings.
 - `result_export.py`: exports UAV positions, time-slice summaries, and the algorithm comparison table.
 - `result_visualization.py`: generates Figures 5.3-5.6 from the experiment results.
-- `Picture/uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
-- `Picture/`: contains reproducible scripts for the Chapter 3 methodology figures.
+- `uav_simulation_visualization.py`: generates a four-stage illustration of the UAV deployment process.
 - `tests/test_mas_coordination.py`: checks the MAS calculations with small deterministic examples.
 - `tests/test_standard_pso.py`: checks initialization, repeatability, boundaries, and convergence history.
 - `tests/test_dynamic_mas_pso.py`: checks warm-start, time-slice tracking, averages, and repeatability.
 - `tests/test_baseline_algorithms.py`: checks the four baseline workflows and UAV ID alignment.
 - `tests/test_result_outputs.py`: checks runtime fields, CSV exports, representative time-slice selection, and figure generation.
+- `tests/test_formal_release.py`: checks the formal parameters, original defaults, output names, and obsolete-file cleanup.
 
 ## Environment
 
@@ -62,23 +63,38 @@ The preprocessing module creates:
 Run the simulation with:
 
 ```powershell
-python .\Picture\uav_simulation_visualization.py
+python .\uav_simulation_visualization.py
 ```
 
-The generated simulation figures and Chapter 3 methodology figures are saved in `report_picture`.
+The generated simulation figures are saved in `results/simulation`.
 
 ## Complete Experiment
 
-Run all five algorithms and save their results with:
+Run the official paper experiment with:
 
 ```powershell
-python .\experiment_runner.py --csv .\data\yjmob100k-dataset2.csv --output .\results
+python .\msc_project_uav_mas_pso.py
+```
+
+The default input and output locations are:
+
+```text
+D:\MSC Project Result\data\yjmob100k-dataset2.csv
+D:\MSC Project Result\Result
+```
+
+They can also be provided explicitly:
+
+```powershell
+python .\msc_project_uav_mas_pso.py `
+  --csv "D:\MSC Project Result\data\yjmob100k-dataset2.csv" `
+  --output "D:\MSC Project Result\Result"
 ```
 
 For each algorithm, the program exports:
 
 - `<algorithm>_uav_positions.csv`: UAV coordinates and movement distance in each time slice.
-- `<algorithm>_time_slot_summary.csv`: coverage, fitness, constraint, overlap, movement, communication, and runtime statistics.
+- `<algorithm>_time_slot_summary.csv`: coverage, constraint, overlap, movement, and runtime statistics.
 
 The shared `algorithm_comparison.csv` compares average coverage, fitness, movement, constraint violations, overlap, and runtime across the five algorithms.
 
@@ -109,7 +125,7 @@ The first time slice starts from random particles. From the second time slice on
 
 The warm-start values remain a position-noise standard deviation of `5.0` grid units and a random-restart ratio of `0.20`.
 
-## Algorithm Parameters in v0.8.0
+## Formal Experiment Profile
 
 - UAV count: `5`
 - Coverage radius: `25.0`
@@ -127,6 +143,8 @@ The warm-start values remain a position-noise standard deviation of `5.0` grid u
 - Social coefficient `c2`: `1.45`
 - Warm-start noise standard deviation: `5.0`
 - Random restart ratio: `0.20`
+
+These values are fixed to keep the paper experiments consistent and reproducible. They are not described as globally optimal parameters.
 
 ## Baseline Algorithms
 

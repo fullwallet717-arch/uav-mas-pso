@@ -1,6 +1,12 @@
 # Changelog
 
-## [0.8.0] - Unreleased
+## [0.9.0] - Unreleased
+
+- Added `msc_project_uav_mas_pso.py` as the official all-in-one experiment entry.
+- Preserved the existing paper parameters and random-seed scheme while defining the formal output contract.
+- Removed duplicate coverage curves and added release documentation and checks.
+
+## [0.8.0] - 2026-07-27
 
 - Updated the MAS density, safety, movement, and overlap weights.
 - Updated the default PSO swarm size, iteration count, inertia, and learning
