@@ -1,6 +1,12 @@
 # Changelog
 
-## [0.9.0] - Unreleased
+## [1.0.0] - 2026-07-29
+
+- Prepared the reproducible paper release using `msc_project_uav_mas_pso.py`.
+- Kept the reported experiment parameters and random-seed scheme unchanged.
+- Added final output cleanup, documentation, and release verification.
+
+## [0.9.0] - 2026-07-28
 
 - Added `msc_project_uav_mas_pso.py` as the official all-in-one experiment entry.
 - Preserved the existing paper parameters and random-seed scheme while defining the formal output contract.

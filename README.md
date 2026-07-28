@@ -4,7 +4,7 @@ This project studies dynamic UAV deployment for disaster response using mobile u
 
 ## Version
 
-Version `v0.9.0` adds the tested all-in-one experiment script as the official paper release entry while preserving its existing parameters and random-seed scheme.
+Version `v1.0.0` is the reproducible paper release. It keeps the experiment parameters and random-seed scheme used in the report, runs all five algorithms, and generates the final tables and figures from one entry script.
 
 ## Files
 
@@ -96,7 +96,7 @@ For each algorithm, the program exports:
 - `<algorithm>_uav_positions.csv`: UAV coordinates and movement distance in each time slice.
 - `<algorithm>_time_slot_summary.csv`: coverage, constraint, overlap, movement, and runtime statistics.
 
-The shared `algorithm_comparison.csv` compares average coverage, fitness, movement, constraint violations, overlap, and runtime across the five algorithms.
+The shared `algorithm_average_coverage_comparison.csv` compares average coverage, fitness, movement, constraint violations, overlap, and runtime across the five algorithms.
 
 The following figures are also generated:
 
@@ -160,3 +160,11 @@ Run the tests with:
 ```powershell
 python -m unittest discover -s tests -v
 ```
+
+For a short installation check, run:
+
+```powershell
+python .\msc_project_uav_mas_pso.py --quick
+```
+
+The `--quick` option uses only eight time slices and is intended for code verification, not for paper results. Run the command without `--quick` to regenerate the formal 24-time-slice experiment. A successful formal run validates all 27 required output files and removes known duplicate or parameter-search files from the output directory.

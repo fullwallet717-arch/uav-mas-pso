@@ -89,6 +89,7 @@ OBSOLETE_OUTPUT_FILENAMES = (
     "penalty_weight_grid_search.png",
     "pso_parameter_search.csv",
     "pso_parameter_search.png",
+    "Figure_5_5_selected_time_slots_corrected.csv",
 )
 
 
